@@ -10,7 +10,7 @@
   margin: 10px;
   border-radius: 10px;
   text-align: center;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 #meal-full-detail {
   width: 400px;
@@ -23,6 +23,10 @@
   width: 100%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+.meal img,
+.meal p {
+  cursor: pointer;
 }
 .meal p {
   padding: 10px 0;
