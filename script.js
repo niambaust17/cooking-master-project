@@ -40,7 +40,7 @@ const getMealInfo = mealId =>
 {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${ mealId }`)
         .then(res => res.json())
-        .then(data => showMealInfo(data.meals[0]));
+        .then(data => showMealInfo(data.meals[0]))
 }
 
 
