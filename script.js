@@ -4,7 +4,7 @@ const mealDetail = document.getElementById('meal-full-detail');
 
 const loadMeals = async () =>
 {
-    if (mealSearch.value.length != "")
+    if (mealSearch.value.length != 0 && isNaN(mealSearch.value))
     {
         const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${ mealSearch.value }`);
         mealContainer.innerHTML = '';
@@ -19,6 +19,10 @@ const loadMeals = async () =>
         }
         mealSearch.value = '';
         mealDetail.innerHTML = '';
+    }
+    else
+    {
+        mealSearch.value = '';
     }
 }
 
