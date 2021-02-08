@@ -1,46 +1,55 @@
-const searchBtn = document.getElementById('search');
 const mealSearch = document.getElementById('meal-search');
 const mealContainer = document.getElementById('meal-container');
 const mealDetail = document.getElementById('meal-full-detail');
 
-searchBtn.addEventListener('click', () =>
+const loadMeals = async () =>
 {
-    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${ mealSearch.value }`)
-        .then(res => res.json())
-        .then(data => showMatchingMeal(data))
-        .catch(error => alert('No Food Found'))
-
-    const showMatchingMeal = data =>
+    if (mealSearch.value.length != "")
     {
-        data.meals.forEach(meal =>
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${ mealSearch.value }`);
+        mealContainer.innerHTML = '';
+        try
         {
-            const mealImgSrc = meal.strMealThumb;
-            const mealName = meal.strMeal;
-            const mealId = meal.idMeal;
+            const data = await res.json();
+            showMatchingMeal(data);
+        }
+        catch (error)
+        {
+            alert('No Food Found');
+        }
+        mealSearch.value = '';
+        mealDetail.innerHTML = '';
+    }
+}
 
-            const mealDiv = document.createElement('div');
-            mealDiv.className = 'meal';
 
-            const mealInfo = `
+const showMatchingMeal = data =>
+{
+    data.meals.forEach(meal =>
+    {
+        const mealImgSrc = meal.strMealThumb;
+        const mealName = meal.strMeal;
+        const mealId = meal.idMeal;
+
+        const mealDiv = document.createElement('div');
+        mealDiv.className = 'meal';
+
+        const mealInfo = `
             <img onclick="getMealInfo('${ mealId }')" src="${ mealImgSrc }" alt="">
             <p onclick="getMealInfo('${ mealId }')">${ mealName }</p>
             `;
 
-            mealDiv.innerHTML = mealInfo;
-            mealContainer.appendChild(mealDiv);
-        });
-    }
-    mealSearch.value = '';
-    mealContainer.innerHTML = '';
-    mealDetail.innerHTML = '';
-});
+        mealDiv.innerHTML = mealInfo;
+        mealContainer.appendChild(mealDiv);
+    });
+}
 
 
-const getMealInfo = mealId =>
+const getMealInfo = async (mealId) =>
 {
-    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${ mealId }`)
-        .then(res => res.json())
-        .then(data => showMealInfo(data.meals[0]))
+    const res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${ mealId }`);
+    const data = await res.json();
+    showMealInfo(data.meals[0]);
 }
 
 
